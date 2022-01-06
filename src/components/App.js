@@ -12,6 +12,7 @@ import ExerciseList from "./ExerciseList";
 import SearchColumn from './SearchColumn';
 import Exercise from "./Exercise";
 import ExerciseResults from "./ExerciseResults";
+import SearchFilters from "./SearchFilters";
 
 
 const MainContainer = styled.div`
@@ -91,13 +92,13 @@ const App = () => {
 
         if (start === finish){
             const column = state.columns[source.droppableId];
-            const newTaskIds = Array.from(column.taskIds);
-            newTaskIds.splice(source.index, 1);
-            newTaskIds.splice(destination.index, 0, draggableId);
+            const newExerciseIds = Array.from(column.exerciseIds);
+            newExerciseIds.splice(source.index, 1);
+            newExerciseIds.splice(destination.index, 0, draggableId);
 
             const newColumn = {
                 ...column,
-                taskIds: newTaskIds,
+                exerciseIds: newExerciseIds,
             };
 
             const newState = {
@@ -113,18 +114,18 @@ const App = () => {
         }
 
         // Moving from one list to another
-        const startTaskIds = Array.from(start.taskIds);
-        startTaskIds.splice(source.index, 1);
+        const startExerciseIds = Array.from(start.exerciseIds);
+        startExerciseIds.splice(source.index, 1);
         const newStart = {
             ...start,
-            taskIds: startTaskIds,
+            exerciseIds: startExerciseIds,
         };
 
-        const finishTaskIds = Array.from(finish.taskIds);
-        finishTaskIds.splice(destination.index, 0, draggableId);
+        const finishExerciseIds = Array.from(finish.exerciseIds);
+        finishExerciseIds.splice(destination.index, 0, draggableId);
         const newFinish = {
             ...finish,
-            taskIds: finishTaskIds,
+            exerciseIds: finishExerciseIds,
         };
 
         const newState = {
@@ -142,12 +143,8 @@ const App = () => {
         setState(newState);
 
 
-
+        console.log('state: ', state);
     };
-
-    async function onTermSubmit(term) {
-        setSearchStr(term);
-    }
 
     useEffect(()=> {
         // Prevent first update loading
@@ -175,85 +172,100 @@ const App = () => {
         const newState = {...state};
         let idsToDelete = [];
 
-        console.log('state before deletions: ', state);
+        // console.log('state before deletions: ', state);
         for (let indExercises in newState["exercises"]){
             let exercise = newState["exercises"][indExercises];
             // console.log(exercise.name, ' is used: ', exercise.used);
             if (exercise.used === false) {
                 idsToDelete.push(exercise.id);
                 // console.log('deleting', newState["exercises"][indExercises]);
-                // TODO: Reintroduce when we fix taskids for column-0
+                // TODO: Reintroduce when we fix exerciseIds for column-0
                 delete newState["exercises"][indExercises];
-                console.log('newState after deleting ', newState["exercises"][indExercises], ': ', newState);
+                // console.log('newState after deleting ', newState["exercises"][indExercises], ': ', newState);
             }
         }
         // RIGHT how could I be so silly... I need to also remove the ids from column-0
-        let newStateIds = newState["columns"]["column-0"]["taskIds"]
-        console.log('taskids: ', newStateIds);
-        console.log('ids to delete: ', idsToDelete);
+        let newStateIds = newState["columns"]["column-0"]["exerciseIds"]
+        // console.log('exerciseIds: ', newStateIds);
+        // console.log('ids to delete: ', idsToDelete);
 
         setState(newState);
 
-        console.log('deleting complete, reloading new searchresults');
-        console.log('state after deletions: ', state);
+        // console.log('deleting complete, reloading new searchresults');
+        // console.log('state after deletions: ', state);
 
-        // create new state and iterate over searchresults, creating new exercise objects and pushing taskids to columns. could probably setstate outside this loop
+        // create new state and iterate over searchresults, creating new exercise objects and pushing exerciseIds to columns. could probably setstate outside this loop
         //const newState = {...state};
         for (let i = 0; i < searchResults.length; i++ ){
             const id = searchResults[i][0];
-            const name = searchResults[i][1];
+            const dbId = searchResults[i][1]
+            const name = searchResults[i][2];
+            const target = searchResults[i][3];
+            const bodyPart = searchResults[i][4];
+            const equipment = searchResults[i][5];
+            const sets = null;
+            const reps = null;
+
             // console.log('test id: ', id, ' name: ', name);
-            newState["exercises"][id] = {id: id, name: name, used: false};
-            newState["columns"]["column-0"].taskIds.push(id);
+            newState["exercises"][id] = {id: id, dbId: dbId, name: name, target: target, bodyPart: bodyPart, equipment: equipment, sets: sets, reps: reps, used: false};
+            newState["columns"]["column-0"].exerciseIds.push(id);
             setState(newState);
             // console.log('state: ', state);
         }
 
-        console.log('taskids: ', newState["columns"]["column-0"]["taskIds"]);
-        console.log(newStateIds.filter(n => !idsToDelete.includes(n)));
-        newState["columns"]["column-0"]["taskIds"] = newStateIds.filter(n => !idsToDelete.includes(n));
+        // console.log('exerciseIds: ', newState["columns"]["column-0"]["exerciseIds"]);
+        // console.log(newStateIds.filter(n => !idsToDelete.includes(n)));
+        newState["columns"]["column-0"]["exerciseIds"] = newStateIds.filter(n => !idsToDelete.includes(n));
 
-    },[searchResults])
+    },[searchResults]);
+
+    async function onTermSubmit(term) {
+        setSearchStr(term);
+    }
+
+    async function setRepsSubmit(term) {
+        setSearchStr(term);
+    }
 
     return (
         <div>
-            <Container>
-                <Grid container>
+            <Container disableGutters={true} maxWidth>
+                <Grid>
                     <Grid item xs={12}>
                         <SearchBar placeholder="Search by name" onFormSubmitToSB={onTermSubmit}/>
-                        <ExerciseList className="profile-list" searchStr={searchStr} tagSearchStr={searchStr} exercises={exercises}/>
+                        {/*<ExerciseList className="profile-list" searchStr={searchStr} tagSearchStr={searchStr} exercises={exercises}/>*/}
+                        <SearchFilters/>
 
                     </Grid>
                     <Grid item xs={12}>
                         <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd} >
-
                             <Droppable droppableId="all-columns" direction="horizontal" type="column">
                                 {(provided) => (
-
                                     <MainContainer
                                         {...provided.droppableProps}
                                         ref={provided.innerRef}
                                     >
                                         {state.columnOrder.map((columnId, index) => {
-
-
                                             // Add isDropDisabled={isDropDisabled} bind to follow this logic ^, which
                                             if (index === 0){
                                                 const column = state.columns[columnId];
-                                                const tasks = column.taskIds.map(taskId => state.exercises[taskId]);
-                                                return <SearchColumn key={column.id} column={column} tasks={tasks} index={index} isDropDisabled={1}></SearchColumn>
+                                                const exercises = column.exerciseIds.map(exerciseId => state.exercises[exerciseId]);
+                                                return <SearchColumn key={column.id} column={column} exercises={exercises} index={index} isDropDisabled={1}></SearchColumn>
                                             } else {
                                                 const column = state.columns[columnId];
-                                                const tasks = column.taskIds.map(taskId => state.exercises[taskId]);
-                                                return <Column key={column.id} column={column} tasks={tasks} index={index} ></Column>
+                                                const exercises = column.exerciseIds.map(exerciseId => state.exercises[exerciseId]);
+                                                return <Column key={column.id} column={column} exercises={exercises} index={index} ></Column>
                                             }
-
                                         })}
                                         {provided.placeholder}
                                     </MainContainer>
                                 )}
                             </Droppable>
                         </DragDropContext>
+                    </Grid>
+                    <Grid item xs={12}>
+                        test
+
                     </Grid>
                 </Grid>
             </Container>

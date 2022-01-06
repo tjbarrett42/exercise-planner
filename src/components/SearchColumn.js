@@ -9,7 +9,7 @@ const MainContainer = styled.div`
     border: 1px solid red;
     background-color: white;
     border-radius: 2px;
-    width: 220px;
+    width: 300px;
     
     display: flex;
     flex-direction: column;
@@ -33,8 +33,8 @@ const TaskList = styled.div`
 // })
 
 const InnerTaskList = (props) => {
-    return props.tasks.map((task, index) => (
-        <ExerciseDraggable key={task.id} task={task} index={index}/>
+    return props.exercises.map((exercise, index) => (
+        <ExerciseDraggable key={exercise.id} exercise={exercise} index={index}/>
     ));
 }
 
@@ -42,14 +42,14 @@ const SearchColumn = (props) => {
     return (
         <MainContainer >
             <Title >{props.column.title}</Title>
-                <Droppable droppableId={props.column.id} type="task">
+                <Droppable droppableId={props.column.id} type="exercise">
                     {(provided, snapshot) => (
                         <TaskList
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             isDraggingOver={snapshot.isDraggingOver}
                         >
-                            <InnerTaskList tasks={props.tasks}/>
+                            <InnerTaskList exercises={props.exercises}/>
                             {provided.placeholder}
                         </TaskList>
                     )}

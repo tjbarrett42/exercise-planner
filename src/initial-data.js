@@ -6,22 +6,22 @@ const initialData = {
         'column-0': {
             id: 'column-0',
             title: 'Exercises',
-            taskIds: [],
+            exerciseIds: [],
         },
         'column-1': {
             id: 'column-1',
             title: 'Monday',
-            taskIds: [],
+            exerciseIds: [],
         },
         'column-2': {
             id: 'column-2',
             title: 'Tuesday',
-            taskIds: [],
+            exerciseIds: [],
         },
         'column-3': {
             id: 'column-3',
             title: 'Wednesday',
-            taskIds: [],
+            exerciseIds: [],
         },
     },
     columnOrder: ['column-0', 'column-1', 'column-2', 'column-3'],

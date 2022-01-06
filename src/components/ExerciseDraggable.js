@@ -1,13 +1,17 @@
 import React from 'react';
 import {Container} from "@mui/material";
 import { Draggable } from 'react-beautiful-dnd';
-import styled from 'styled-components';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import { styled } from '@mui/material/styles';
+import Typography from "@mui/material/Typography";
+import TextField from '@mui/material/TextField';
+import ExerciseSetsRepsEntry from "./ExerciseSetsRepsEntry";
 
-
-const Container2 = styled.div`
-    border: 1px solid black;
-    padding: 10px;
-    margin: 5px;
+const CustomCard = styled(Card)`
+    border: 1px solid grey;
+    padding: 0px;
+    margin-bottom: 5px;
 
     background-color: ${props => 
         props.isDragDisabled
@@ -18,28 +22,46 @@ const Container2 = styled.div`
     
 `;
 
-const Handle = styled.div`
-    width: 20px;
-    height: 20px;
-    background-color: orange;
-    border-radius: 4px;
-    margin-right: 8px;
+const CustomCardContent = styled(CardContent)`
+    padding: 10px;
+    padding-bottom: 0px;
+
 `
+
 
 const ExerciseDraggable = (props) => {
     // const isDragDisabled = props.task.id === 'task-1';
+
     return (
-        <Draggable  draggableId={props.task.id} index={props.index}>
+        <Draggable  draggableId={props.exercise.id} index={props.index}>
             {(provided, snapshot) => (
-                <Container2 className="task-draggable"
+                <CustomCard
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
                     isDragging={snapshot.isDragging}
                     // isDragDisabled={isDragDisabled}
                 >
-                    {props.task.name}
-                </Container2>
+                    <CustomCardContent>
+                        <Typography variant="body1">
+                            {props.exercise.name}
+                        </Typography>
+                        {/*<ExerciseSetsRepsEntry onFormSubmitToSRE={}/>*/}
+                        {/*<Typography variant="subtitle1">*/}
+                        {/*    {props.exercise.target}*/}
+                        {/*</Typography>*/}
+                        {/*<Typography variant="subtitle2">*/}
+                        {/*    {props.exercise.dbId}*/}
+                        {/*</Typography>*/}
+                        {/*<Typography variant="subtitle2">*/}
+                        {/*    {props.exercise.bodyPart}*/}
+                        {/*</Typography>*/}
+                        {/*<Typography variant="subtitle2">*/}
+                        {/*    {props.exercise.equipment}*/}
+                        {/*</Typography>*/}
+
+                    </CustomCardContent>
+                </CustomCard>
             )}
         </Draggable>
     );
