@@ -3,6 +3,7 @@ import {Container} from "@mui/material";
 import ExerciseDraggable from './ExerciseDraggable';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
+import WorkoutTitleEntry from "./WorkoutTitleEntry";
 
 const MainContainer = styled.div`
     margin: 8px;
@@ -29,17 +30,31 @@ const TaskList = styled.div`
 `;
 
 const InnerTaskList = (props) => {
+    async function updateSetsRepsToColumn(exerciseId, setsReps){
+        props.updateSetsRepsToApp(exerciseId, setsReps);
+    }
+
     return props.exercises.map((exercise, index) => (
-        <ExerciseDraggable key={exercise.id} exercise={exercise} index={index}/>
+        <ExerciseDraggable key={exercise.id} exercise={exercise} index={index} updateSetsRepsToColumn={updateSetsRepsToColumn}/>
     ));
 }
 
 const Column = (props) => {
+    async function updateSetsRepsToApp(exerciseId, setsReps){
+        props.updateSetsRepsToState(exerciseId, setsReps);
+    }
+
+    async function updateTitleToApp(columnId, title){
+        props.updateTitleToState(columnId, title);
+    }
+
     return (
         <Draggable draggableId={props.column.id} index={props.index}>
             {(provided) => (
                 <MainContainer {...provided.draggableProps} ref={provided.innerRef}>
-                    <Title {...provided.dragHandleProps}>{props.column.title}</Title>
+                    <Title {...provided.dragHandleProps}>
+                        <WorkoutTitleEntry columnId={props.column.id} onFormSubmitToWTE={updateTitleToApp}/>
+                    </Title>
                     <Droppable droppableId={props.column.id} type="exercise">
                         {(provided, snapshot) => (
                             <TaskList
@@ -47,7 +62,7 @@ const Column = (props) => {
                                 {...provided.droppableProps}
                                 isDraggingOver={snapshot.isDraggingOver}
                             >
-                                <InnerTaskList exercises={props.exercises}/>
+                                <InnerTaskList exercises={props.exercises} updateSetsRepsToApp={updateSetsRepsToApp}/>
                                 {provided.placeholder}
                             </TaskList>
                         )}

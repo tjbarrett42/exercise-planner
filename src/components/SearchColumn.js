@@ -33,12 +33,23 @@ const TaskList = styled.div`
 // })
 
 const InnerTaskList = (props) => {
+    async function updateSetsRepsToColumn(exerciseId, setsReps){
+        props.updateSetsRepsToApp(exerciseId, setsReps);
+    }
+
     return props.exercises.map((exercise, index) => (
-        <ExerciseDraggable key={exercise.id} exercise={exercise} index={index}/>
+        <ExerciseDraggable key={exercise.id} exercise={exercise} index={index} updateSetsRepsToColumn={updateSetsRepsToColumn}/>
     ));
 }
 
 const SearchColumn = (props) => {
+    async function updateSetsRepsToApp(exerciseId, setsReps){
+        props.updateSetsRepsToState(exerciseId, setsReps);
+    }
+
+
+
+
     return (
         <MainContainer >
             <Title >{props.column.title}</Title>
@@ -49,7 +60,7 @@ const SearchColumn = (props) => {
                             {...provided.droppableProps}
                             isDraggingOver={snapshot.isDraggingOver}
                         >
-                            <InnerTaskList exercises={props.exercises}/>
+                            <InnerTaskList exercises={props.exercises} updateSetsRepsToApp={updateSetsRepsToApp}/>
                             {provided.placeholder}
                         </TaskList>
                     )}

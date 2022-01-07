@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 import Typography from "@mui/material/Typography";
 import TextField from '@mui/material/TextField';
 import ExerciseSetsRepsEntry from "./ExerciseSetsRepsEntry";
+import Grid from '@mui/material/Grid';
 
 const CustomCard = styled(Card)`
     border: 1px solid grey;
@@ -29,42 +30,66 @@ const CustomCardContent = styled(CardContent)`
 `
 
 
+
+
 const ExerciseDraggable = (props) => {
+
+    async function updateSetsRepsToInnerList(exerciseId, setsReps){
+
+        props.updateSetsRepsToColumn(exerciseId, setsReps);
+    }
+
     // const isDragDisabled = props.task.id === 'task-1';
+    // Logic for if draggable becomes 'used', where we then want to present sets/reps options
+    if (props.exercise.used === true){
+        return (
+            <Draggable  draggableId={props.exercise.id} index={props.index}>
+                {(provided, snapshot) => (
+                    <CustomCard
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                        isDragging={snapshot.isDragging}
+                        // isDragDisabled={isDragDisabled}
+                    >
+                        <CustomCardContent>
+                            <Typography variant="body1">
+                                {props.exercise.name}
+                            </Typography>
+                            <Grid container>
+                                <Grid xs={6}>
 
-    return (
-        <Draggable  draggableId={props.exercise.id} index={props.index}>
-            {(provided, snapshot) => (
-                <CustomCard
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    ref={provided.innerRef}
-                    isDragging={snapshot.isDragging}
-                    // isDragDisabled={isDragDisabled}
-                >
-                    <CustomCardContent>
-                        <Typography variant="body1">
-                            {props.exercise.name}
-                        </Typography>
-                        {/*<ExerciseSetsRepsEntry onFormSubmitToSRE={}/>*/}
-                        {/*<Typography variant="subtitle1">*/}
-                        {/*    {props.exercise.target}*/}
-                        {/*</Typography>*/}
-                        {/*<Typography variant="subtitle2">*/}
-                        {/*    {props.exercise.dbId}*/}
-                        {/*</Typography>*/}
-                        {/*<Typography variant="subtitle2">*/}
-                        {/*    {props.exercise.bodyPart}*/}
-                        {/*</Typography>*/}
-                        {/*<Typography variant="subtitle2">*/}
-                        {/*    {props.exercise.equipment}*/}
-                        {/*</Typography>*/}
-
-                    </CustomCardContent>
-                </CustomCard>
-            )}
-        </Draggable>
-    );
+                                </Grid>
+                                <Grid xs={6}>
+                                    <ExerciseSetsRepsEntry exerciseId = {props.exercise.id} onFormSubmitToSRE={updateSetsRepsToInnerList}/>
+                                </Grid>
+                            </Grid>
+                        </CustomCardContent>
+                    </CustomCard>
+                )}
+            </Draggable>
+        );
+    } else {
+        return (
+            <Draggable  draggableId={props.exercise.id} index={props.index}>
+                {(provided, snapshot) => (
+                    <CustomCard
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={provided.innerRef}
+                        isDragging={snapshot.isDragging}
+                        // isDragDisabled={isDragDisabled}
+                    >
+                        <CustomCardContent>
+                            <Typography variant="body1">
+                                {props.exercise.name}
+                            </Typography>
+                        </CustomCardContent>
+                    </CustomCard>
+                )}
+            </Draggable>
+        );
+    }
 }
 
 export default ExerciseDraggable;

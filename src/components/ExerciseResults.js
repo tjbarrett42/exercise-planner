@@ -7,7 +7,7 @@ function ExerciseResults(exercises,searchStr,equipment) {
         (exercise.name.toLowerCase().includes(searchStr.toLowerCase()))).slice(0,10).map((exercise, index) => {
 
         //return <Profile key={profile.id} profile={profile} sendTagToProfileList={updateTags}/>;
-        console.log('exercise: ', exercise);
+        // console.log('exercise: ', exercise);
         return [(Date.now()+index).toString(), exercise.id, exercise.name, exercise.target, exercise.bodyPart, exercise.equipment];
     });
 

@@ -12,8 +12,9 @@ import ExerciseList from "./ExerciseList";
 import SearchColumn from './SearchColumn';
 import Exercise from "./Exercise";
 import ExerciseResults from "./ExerciseResults";
+import ExerciseDataAggregation from "./ExerciseDataAggregation";
 import SearchFilters from "./SearchFilters";
-
+import AnalysisSection from "./AnalysisSection";
 
 const MainContainer = styled.div`
     display: flex;
@@ -203,11 +204,10 @@ const App = () => {
             const target = searchResults[i][3];
             const bodyPart = searchResults[i][4];
             const equipment = searchResults[i][5];
-            const sets = null;
-            const reps = null;
+            const setsReps = [0,0];
 
             // console.log('test id: ', id, ' name: ', name);
-            newState["exercises"][id] = {id: id, dbId: dbId, name: name, target: target, bodyPart: bodyPart, equipment: equipment, sets: sets, reps: reps, used: false};
+            newState["exercises"][id] = {id: id, dbId: dbId, name: name, target: target, bodyPart: bodyPart, equipment: equipment, setsReps: setsReps, used: false};
             newState["columns"]["column-0"].exerciseIds.push(id);
             setState(newState);
             // console.log('state: ', state);
@@ -227,6 +227,24 @@ const App = () => {
         setSearchStr(term);
     }
 
+    async function updateSetsRepsToState(exerciseId, setsReps){
+        // For some reason regular object spread wasn't working here, need to revise and make more efficient
+        ////console.log('updating setsReps as ', setsReps[0],'x',setsReps[1], ' for id: ', exerciseId);
+        const newState = {...state};
+        newState["exercises"][exerciseId].setsReps = setsReps;
+        setState(newState);
+    }
+
+    async function updateTitleToState(columnId, title){
+        // console.log('updating title as ', title, ' for column id: ',columnId);
+        // console.log('current title', state["columns"][columnId]["title"]);
+
+        // For some reason regular object spread wasn't working here, need to revise and make more efficient
+        const newState = {...state};
+        newState["columns"][columnId].title = title;
+        setState(newState);
+    }
+
     return (
         <div>
             <Container disableGutters={true} maxWidth>
@@ -238,6 +256,16 @@ const App = () => {
 
                     </Grid>
                     <Grid item xs={12}>
+                        <Grid container columns={8}>
+                            <Grid item xs={1}></Grid>
+                            <Grid item xs={1}>Monday</Grid>
+                            <Grid item xs={1}>Tuesday</Grid>
+                            <Grid item xs={1}>Wednesday</Grid>
+                            <Grid item xs={1}>Thursday</Grid>
+                            <Grid item xs={1}>Friday</Grid>
+                            <Grid item xs={1}>Saturday</Grid>
+                            <Grid item xs={1}>Sunday</Grid>
+                        </Grid>
                         <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd} >
                             <Droppable droppableId="all-columns" direction="horizontal" type="column">
                                 {(provided) => (
@@ -250,11 +278,11 @@ const App = () => {
                                             if (index === 0){
                                                 const column = state.columns[columnId];
                                                 const exercises = column.exerciseIds.map(exerciseId => state.exercises[exerciseId]);
-                                                return <SearchColumn key={column.id} column={column} exercises={exercises} index={index} isDropDisabled={1}></SearchColumn>
+                                                return <SearchColumn key={column.id} column={column} exercises={exercises} index={index} isDropDisabled={1} updateSetsRepsToState={updateSetsRepsToState}></SearchColumn>
                                             } else {
                                                 const column = state.columns[columnId];
                                                 const exercises = column.exerciseIds.map(exerciseId => state.exercises[exerciseId]);
-                                                return <Column key={column.id} column={column} exercises={exercises} index={index} ></Column>
+                                                return <Column key={column.id} column={column} exercises={exercises} index={index} updateSetsRepsToState={updateSetsRepsToState} updateTitleToState={updateTitleToState}></Column>
                                             }
                                         })}
                                         {provided.placeholder}
@@ -264,7 +292,10 @@ const App = () => {
                         </DragDropContext>
                     </Grid>
                     <Grid item xs={12}>
-                        test
+                        Data:
+                        <AnalysisSection data={state}>
+
+                        </AnalysisSection>
 
                     </Grid>
                 </Grid>
