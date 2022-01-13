@@ -25,6 +25,7 @@ const WorkoutTitleEntry = (props) => {
             placeholder="Title"
             size="small"
             hiddenLabel
+            fullWidth
             onChange={onTitleInputChange}
         />
     )

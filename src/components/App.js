@@ -15,6 +15,10 @@ import ExerciseResults from "./ExerciseResults";
 import ExerciseDataAggregation from "./ExerciseDataAggregation";
 import SearchFilters from "./SearchFilters";
 import AnalysisSection from "./AnalysisSection";
+import NavBar from "./NavBar";
+import cloneDeep from 'lodash/cloneDeep';
+import PPL from '../PPL';
+import DaysOfWeekHeaders from "./DaysOfWeekHeaders";
 
 const MainContainer = styled.div`
     display: flex;
@@ -245,9 +249,42 @@ const App = () => {
         setState(newState);
     }
 
+    async function deleteDraggable(exerciseId){
+        const newState = cloneDeep(state);
+        console.log('deleting drag ', exerciseId);
+
+        //newState["columns"]["column-0"]["exerciseIds"] = newStateIds.filter(n => !idsToDelete.includes(n));
+
+        // iterate over newState columns and delete
+        function deleteIdFromColumn(){
+            for (let column in newState["columns"]){
+                console.log('looking at column ', column, ' which contains: ', newState["columns"][column]["exerciseIds"]);
+                if (newState["columns"][column]["exerciseIds"].includes(exerciseId)){
+                    const index = newState["columns"][column]["exerciseIds"].indexOf(exerciseId);
+                    console.log('deleting: ', newState["exercises"][exerciseId], ' from exercises');
+                    console.log('deleting: ', newState["columns"][column]["exerciseIds"][index], ' from column exerciseIds');
+                    delete newState["exercises"][exerciseId]
+                    newState["columns"][column]["exerciseIds"].splice(index,1);
+                    return;
+                }
+                // for (let exerciseIndex in newState["columns"][column]["exerciseIds"]){
+                //     console.log(exerciseIndex, ' ' , newState["columns"][column]["exerciseIds"]);
+                //     if (newState["columns"][column]["exerciseIds"].includes(exerciseId)){
+                //
+                //         return;
+                //     }
+                    //delete newState["columns"][column]["exerciseIds"][exerciseIndex];
+                    //delete newState["exercises"][exerciseId];
+            }
+        }
+        deleteIdFromColumn();
+        setState(newState);
+    }
+
     return (
         <div>
             <Container disableGutters={true} maxWidth>
+                <NavBar></NavBar>
                 <Grid>
                     <Grid item xs={12}>
                         <SearchBar placeholder="Search by name" onFormSubmitToSB={onTermSubmit}/>
@@ -256,16 +293,7 @@ const App = () => {
 
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid container columns={8}>
-                            <Grid item xs={1}></Grid>
-                            <Grid item xs={1}>Monday</Grid>
-                            <Grid item xs={1}>Tuesday</Grid>
-                            <Grid item xs={1}>Wednesday</Grid>
-                            <Grid item xs={1}>Thursday</Grid>
-                            <Grid item xs={1}>Friday</Grid>
-                            <Grid item xs={1}>Saturday</Grid>
-                            <Grid item xs={1}>Sunday</Grid>
-                        </Grid>
+                        <DaysOfWeekHeaders></DaysOfWeekHeaders>
                         <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd} >
                             <Droppable droppableId="all-columns" direction="horizontal" type="column">
                                 {(provided) => (
@@ -282,7 +310,7 @@ const App = () => {
                                             } else {
                                                 const column = state.columns[columnId];
                                                 const exercises = column.exerciseIds.map(exerciseId => state.exercises[exerciseId]);
-                                                return <Column key={column.id} column={column} exercises={exercises} index={index} updateSetsRepsToState={updateSetsRepsToState} updateTitleToState={updateTitleToState}></Column>
+                                                return <Column key={column.id} column={column} exercises={exercises} index={index} updateSetsRepsToState={updateSetsRepsToState} updateTitleToState={updateTitleToState} deleteDraggable={deleteDraggable}></Column>
                                             }
                                         })}
                                         {provided.placeholder}

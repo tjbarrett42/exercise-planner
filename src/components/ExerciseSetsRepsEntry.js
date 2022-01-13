@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import {Input} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { styled } from '@mui/material/styles';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const CustomTextField = styled(TextField)`
     min-width: 30px;
@@ -30,26 +31,27 @@ const ExerciseSetsRepsEntry = (props) => {
 
     return (
         <Grid container>
-            <Grid xs={6}>
+            <Grid item xs={6}>
                 <CustomTextField
                     id="filled-number"
-                    label="Sets"
                     type="number" value={setsReps[0]}
-                    variant="filled"
+                    variant="standard"
                     placeholder="Sets"
                     size="small"
                     onChange={onSetsInputChange}
+                    hiddenLabel
+
                 />
             </Grid>
-            <Grid xs={6}>
+            <Grid item xs={6}>
                 <CustomTextField
                     id="filled-number"
-                    label="Reps"
                     type="number" value={setsReps[1]}
-                    variant="filled"
+                    variant="standard"
                     placeholder= "Reps"
                     size="small"
                     onChange={onRepsInputChange}
+                    hiddenLabel
                     // inputProps={{
                     //     style: {
                     //         padding: 5

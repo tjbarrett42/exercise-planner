@@ -4,12 +4,14 @@ import ExerciseDraggable from './ExerciseDraggable';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import WorkoutTitleEntry from "./WorkoutTitleEntry";
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import Grid from '@mui/material/Grid';
 
 const MainContainer = styled.div`
-    margin: 8px;
+    margin: 1px;
     border: 1px solid lightgrey;
     background-color: white;
-    border-radius: 2px;
+    border-radius: 5px;
     width: 300px;
     
     display: flex;
@@ -17,12 +19,13 @@ const MainContainer = styled.div`
 `
 
 const Title = styled.div`
-    padding: 8px;
+    padding: 5px;
+    
 
 `
 
 const TaskList = styled.div`
-    padding: 8px;
+    padding: 0px;
     transition: background-color 0.2s ease;
     background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'inherit')};
     flex-grow: 1;
@@ -34,8 +37,12 @@ const InnerTaskList = (props) => {
         props.updateSetsRepsToApp(exerciseId, setsReps);
     }
 
+    async function deleteDraggable(exerciseId){
+        props.deleteDraggable(exerciseId);
+    }
+
     return props.exercises.map((exercise, index) => (
-        <ExerciseDraggable key={exercise.id} exercise={exercise} index={index} updateSetsRepsToColumn={updateSetsRepsToColumn}/>
+        <ExerciseDraggable key={exercise.id} exercise={exercise} index={index} updateSetsRepsToColumn={updateSetsRepsToColumn} deleteDraggable={deleteDraggable}/>
     ));
 }
 
@@ -48,13 +55,26 @@ const Column = (props) => {
         props.updateTitleToState(columnId, title);
     }
 
+    async function deleteDraggable(exerciseId) {
+        props.deleteDraggable(exerciseId);
+    }
+
     return (
         <Draggable draggableId={props.column.id} index={props.index}>
             {(provided) => (
                 <MainContainer {...provided.draggableProps} ref={provided.innerRef}>
-                    <Title {...provided.dragHandleProps}>
-                        <WorkoutTitleEntry columnId={props.column.id} onFormSubmitToWTE={updateTitleToApp}/>
-                    </Title>
+                    <Grid container>
+                        <Grid item xs={1} {...provided.dragHandleProps}>
+                            <DragIndicatorIcon ></DragIndicatorIcon>
+                        </Grid>
+                        <Grid item xs={11}>
+                            <Title >
+                                <WorkoutTitleEntry columnId={props.column.id} onFormSubmitToWTE={updateTitleToApp}/>
+                            </Title>
+                        </Grid>
+                    </Grid>
+
+
                     <Droppable droppableId={props.column.id} type="exercise">
                         {(provided, snapshot) => (
                             <TaskList
@@ -62,7 +82,7 @@ const Column = (props) => {
                                 {...provided.droppableProps}
                                 isDraggingOver={snapshot.isDraggingOver}
                             >
-                                <InnerTaskList exercises={props.exercises} updateSetsRepsToApp={updateSetsRepsToApp}/>
+                                <InnerTaskList exercises={props.exercises} updateSetsRepsToApp={updateSetsRepsToApp} deleteDraggable={deleteDraggable}/>
                                 {provided.placeholder}
                             </TaskList>
                         )}

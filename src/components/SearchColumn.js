@@ -5,10 +5,10 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
 const MainContainer = styled.div`
-    margin: 8px;
-    border: 1px solid red;
+    margin: 1px;
+    border: 1px solid lightgrey;
     background-color: white;
-    border-radius: 2px;
+    border-radius: 5px;
     width: 300px;
     
     display: flex;
@@ -21,7 +21,7 @@ const Title = styled.div`
 `
 
 const TaskList = styled.div`
-    padding: 8px;
+    padding: 0px;
     transition: background-color 0.2s ease;
     background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'inherit')};
     flex-grow: 1;
@@ -52,7 +52,6 @@ const SearchColumn = (props) => {
 
     return (
         <MainContainer >
-            <Title >{props.column.title}</Title>
                 <Droppable droppableId={props.column.id} type="exercise">
                     {(provided, snapshot) => (
                         <TaskList
