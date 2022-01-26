@@ -49,6 +49,7 @@ const App = () => {
                 const response = await exerciseDB.get(``);
                 /* Declare 'tags' property for each student */
                 setExercises(response.data);
+                console.log(response.data);
             } catch (e) {
                 console.error(e);
             }
