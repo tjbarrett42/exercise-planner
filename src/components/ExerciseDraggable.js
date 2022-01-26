@@ -1,11 +1,9 @@
-import React from 'react';
-import {Container} from "@mui/material";
+import React, {useState} from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { styled } from '@mui/material/styles';
 import Typography from "@mui/material/Typography";
-import TextField from '@mui/material/TextField';
 import ExerciseSetsRepsEntry from "./ExerciseSetsRepsEntry";
 import Grid from '@mui/material/Grid';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
@@ -13,6 +11,8 @@ import ClearIcon from '@mui/icons-material/Clear';
 import './ExerciseDraggable.css';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import IconButton from "@mui/material/IconButton";
+import InfoDialog from './InfoDialog';
+import AboutDialog from "./AboutDialog";
 
 const CustomCard = styled(Card)`
     border: 1px solid grey;
@@ -23,25 +23,23 @@ const CustomCard = styled(Card)`
              props.isDragging
                 ? 'lightgreen'
                  : 'white'};
-    
-    
 `;
-
-
 
 const CustomCardContent = styled(CardContent)`
     padding: 5px;
     &:last-child {
         padding-bottom: 5px;
     }
-    
-
 `
-
-
-
-
 const ExerciseDraggable = (props) => {
+    const [ openInfo, setOpenInfo ] = useState(false);
+    const handleClickOpenInfo = () => {
+        setOpenInfo(true);
+    };
+    const handleCloseInfo = (value) => {
+        setOpenInfo(false);
+    };
+
 
     async function updateSetsRepsToInnerList(exerciseId, setsReps){
         props.updateSetsRepsToColumn(exerciseId, setsReps);
@@ -49,6 +47,10 @@ const ExerciseDraggable = (props) => {
 
     async function deleteDraggable(){
         props.deleteDraggable(props.exercise.id);
+    }
+
+    async function showInfoDialog(){
+        props.showInfoDialog(props.exercise);
     }
 
     // const isDragDisabled = props.task.id === 'task-1';
@@ -69,9 +71,10 @@ const ExerciseDraggable = (props) => {
                                     <IconButton {...provided.dragHandleProps} >
                                         <DragIndicatorIcon></DragIndicatorIcon>
                                     </IconButton>
-                                    <IconButton>
+                                    <IconButton onClick={handleClickOpenInfo}>
                                         <InfoOutlinedIcon></InfoOutlinedIcon>
                                     </IconButton>
+                                    <InfoDialog open={openInfo} onClose={handleCloseInfo} exercise={props.exercise}/>
                                     <IconButton onClick={deleteDraggable}>
                                         <ClearIcon></ClearIcon>
                                     </IconButton>
@@ -93,7 +96,7 @@ const ExerciseDraggable = (props) => {
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <ExerciseSetsRepsEntry exerciseId = {props.exercise.id} onFormSubmitToSRE={updateSetsRepsToInnerList}/>
+                                        <ExerciseSetsRepsEntry exerciseId = {props.exercise.id} onFormSubmitToSRE={updateSetsRepsToInnerList} setsReps={props.exercise.setsReps}/>
                                     </Grid>
                                 </Grid>
 

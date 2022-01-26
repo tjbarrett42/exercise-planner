@@ -1,5 +1,4 @@
 import React from 'react';
-import {Container} from "@mui/material";
 import ExerciseDraggable from './ExerciseDraggable';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
@@ -13,15 +12,12 @@ const MainContainer = styled.div`
     background-color: white;
     border-radius: 5px;
     width: 300px;
-    
     display: flex;
     flex-direction: column;
 `
 
 const Title = styled.div`
     padding: 5px;
-    
-
 `
 
 const TaskList = styled.div`
@@ -41,8 +37,12 @@ const InnerTaskList = (props) => {
         props.deleteDraggable(exerciseId);
     }
 
+    async function showInfoDialog(exercise){
+        props.showInfoDialog(exercise);
+    }
+
     return props.exercises.map((exercise, index) => (
-        <ExerciseDraggable key={exercise.id} exercise={exercise} index={index} updateSetsRepsToColumn={updateSetsRepsToColumn} deleteDraggable={deleteDraggable}/>
+        <ExerciseDraggable key={exercise.id} exercise={exercise} index={index} updateSetsRepsToColumn={updateSetsRepsToColumn} deleteDraggable={deleteDraggable} showInfoDialog={showInfoDialog}/>
     ));
 }
 
@@ -59,6 +59,10 @@ const Column = (props) => {
         props.deleteDraggable(exerciseId);
     }
 
+    async function showInfoDialog(exercise){
+        props.showInfoDialog(exercise);
+    }
+
     return (
         <Draggable draggableId={props.column.id} index={props.index}>
             {(provided) => (
@@ -69,7 +73,7 @@ const Column = (props) => {
                         </Grid>
                         <Grid item xs={11}>
                             <Title >
-                                <WorkoutTitleEntry columnId={props.column.id} onFormSubmitToWTE={updateTitleToApp}/>
+                                <WorkoutTitleEntry columnId={props.column.id} title={props.column.title} onFormSubmitToWTE={updateTitleToApp}/>
                             </Title>
                         </Grid>
                     </Grid>
@@ -82,7 +86,7 @@ const Column = (props) => {
                                 {...provided.droppableProps}
                                 isDraggingOver={snapshot.isDraggingOver}
                             >
-                                <InnerTaskList exercises={props.exercises} updateSetsRepsToApp={updateSetsRepsToApp} deleteDraggable={deleteDraggable}/>
+                                <InnerTaskList exercises={props.exercises} updateSetsRepsToApp={updateSetsRepsToApp} deleteDraggable={deleteDraggable} showInfoDialog={showInfoDialog}/>
                                 {provided.placeholder}
                             </TaskList>
                         )}

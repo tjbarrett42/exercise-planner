@@ -1,79 +1,98 @@
 const initialWeeklyTotalData = [
     {
         name: 'abductors',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [6,9]
     },
     {
         name: 'abs' ,
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [0,25]
     },
     {
         name: 'adductors',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [6,9]
     },
     {
         name: 'biceps',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [8,26]
     },
     {
         name: 'calves',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [8,16]
     },
     {
         name: 'cardiovascularsystem',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [0,0]
     },
     {
         name: 'delts',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [8,26]
     },
     {
         name: 'forearms',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [2,25]
     },
     {
         name: 'glutes',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [0,16]
     },
     {
         name: 'hamstrings',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [6,20]
     },
     {
         name: 'lats',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [12,18]
     },
     {
         name: 'levatorscapulae',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [0,4]
     },
     {
         name: 'pectorals',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [10,22]
     },
     {
         name: 'quads',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [8,20]
     },
     {
         name: 'serratusanterior',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [4,9]
     },
     {
         name: 'spine',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [0,4]
     },
     {
         name: 'traps',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [0,40]
     },
     {
         name: 'triceps',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [6,30]
     },
     {
         name: 'upperback',
-        setsReps: [0,0]
+        sets: 0,
+        setRange: [10,25]
     },
 ]
 export default initialWeeklyTotalData;

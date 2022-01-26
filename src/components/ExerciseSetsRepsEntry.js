@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import TextField from '@mui/material/TextField';
-import {Input} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { styled } from '@mui/material/styles';
-import InputAdornment from '@mui/material/InputAdornment';
 
 const CustomTextField = styled(TextField)`
     min-width: 30px;
@@ -12,7 +10,7 @@ const CustomTextField = styled(TextField)`
 
 const ExerciseSetsRepsEntry = (props) => {
     /* States for updating set/reps */
-    const [ setsReps, setSetsReps ] = useState([0,0]);
+    const [ setsReps, setSetsReps ] = useState([props.setsReps[0], props.setsReps[1]]);
 
     /* Callback for updating term on input change */
     function onSetsInputChange(e) {

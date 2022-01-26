@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,11 +6,13 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import AboutDialog from "./AboutDialog";
 import ContactDialog from "./ContactDialog";
+import MobileDialog from "./MobileDialog";
 
 /* Navbar component using MUI's AppBar. */
 const NavBar = () => {
     const [ openAbout, setOpenAbout ] = useState(false);
     const [ openContact, setOpenContact ] = useState(false);
+    const [ openMobile, setOpenMobile ] = useState(true);
 
     const handleClickOpenAbout = () => {
         setOpenAbout(true);
@@ -24,6 +26,13 @@ const NavBar = () => {
     };
     const handleCloseContact = (value) => {
         setOpenContact(false);
+    };
+
+    const handleClickOpenMobile = () => {
+        setOpenMobile(true);
+    };
+    const handleCloseMobile = (value) => {
+        setOpenMobile(false);
     };
 
     return (
@@ -40,7 +49,7 @@ const NavBar = () => {
                         {/*>*/}
                         {/*</IconButton>*/}
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            Workout Split Planner
+                            Workout Split Planner v1.1
                         </Typography>
                         <Button color="inherit" onClick={handleClickOpenAbout}>About</Button>
                         <Button color="inherit" onClick={handleClickOpenContact}>Contact</Button>
@@ -49,6 +58,7 @@ const NavBar = () => {
             </Box>
             <AboutDialog open={openAbout} onClose={handleCloseAbout}/>
             <ContactDialog open={openContact} onClose={handleCloseContact}/>
+            <MobileDialog open={openMobile} onClose={handleCloseMobile}/>
         </div>
 
     );

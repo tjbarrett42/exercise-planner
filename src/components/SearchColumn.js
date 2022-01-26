@@ -1,5 +1,4 @@
 import React from 'react';
-import {Container} from "@mui/material";
 import ExerciseDraggable from './ExerciseDraggable';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
@@ -46,9 +45,6 @@ const SearchColumn = (props) => {
     async function updateSetsRepsToApp(exerciseId, setsReps){
         props.updateSetsRepsToState(exerciseId, setsReps);
     }
-
-
-
 
     return (
         <MainContainer >

@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
-import Exercise from "./Exercise";
+import React from 'react';
 
 
-function ExerciseResults(exercises,searchStr,equipment) {
+function ExerciseResults(exercises,searchStr,targetList,equipmentList) {
     const mappedList = exercises.filter(exercise =>
-        (exercise.name.toLowerCase().includes(searchStr.toLowerCase()))).slice(0,10).map((exercise, index) => {
+        (exercise.name.toLowerCase().includes(searchStr.toLowerCase()) && targetList.includes(exercise.target) && equipmentList.includes(exercise.equipment))).slice(0,10).map((exercise, index) => {
 
         //return <Profile key={profile.id} profile={profile} sendTagToProfileList={updateTags}/>;
         // console.log('exercise: ', exercise);

@@ -91,25 +91,7 @@ const AboutDialog = ({onClose, open}) => {
                         </p>
 
                     </Typography>
-                    <Typography variant="h5">
-                        How to Use
-                    </Typography>
-                    <Typography variant="body1">
-                        <p>
-                            The Workout Split Planner is designed for visualizing day-to-day set volume, sorted by muscle group.
-                        </p>
-                        <p>
-                            Exercises can be shown in the results column by querying in the search field, and filtered by target muscle or required equipment.
-                            The exercise cards can be added to the seven columns by dragging and dropping them accordingly. The sets and reps can be configured for each exercise. More information can be found about the exercise by clicking on the information icon on the card.
-                        </p>
-                        <p>
-                            Each column can be titled (such as 'Push', 'Pull', 'Legs') and can also be dragged to swap entire daily routines around your schedule.
-                        </p>
-                        <p>
-                            The analysis section will graph your sets per day per target muscle. Recalculating this visualization can be done by clicking the 'Refresh Analysis' button.
-                        </p>
 
-                    </Typography>
                     <Typography variant="h5">
                         How it Works
                     </Typography>

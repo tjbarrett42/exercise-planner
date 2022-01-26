@@ -7,25 +7,23 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 
-/* Open dialog from app bar for more contact information*/
-const ContactDialog = ({onClose, open}) => {
+/* Open dialog from app bar for more information about the site, formulas, calculations, etc.*/
+const InfoDialog = ({onClose, open, exercise}) => {
     return (
         <Dialog
             onClose={onClose}
             open={open}
             scroll={'paper'}
+
         >
-            <DialogTitle>Contact</DialogTitle>
+            <DialogTitle>About the Workout Split Planner</DialogTitle>
             <DialogContent >
                 <DialogContentText
                     id="scroll-dialog-description"
                     tabIndex={-1}
                 >
                     <Typography variant="h5">
-                        Email
-                    </Typography>
-                    <Typography variant="body1">
-                        Questions or comments? Feel free to send me an email at timothy@jamesbarrett.us
+                        {exercise.name}
                     </Typography>
 
                 </DialogContentText>
@@ -33,8 +31,9 @@ const ContactDialog = ({onClose, open}) => {
             <DialogActions>
                 <Button onClick={onClose}>Back</Button>
             </DialogActions>
+
         </Dialog>
     );
 }
 
-export default ContactDialog;
+export default InfoDialog;

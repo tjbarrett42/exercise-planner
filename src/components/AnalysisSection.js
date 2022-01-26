@@ -7,6 +7,8 @@ import Container from "@mui/material/Container";
 import './AnalysisSection.css';
 import initialWeeklyTotalData from "../initial-weekly-total-data";
 import SetsRepsBarChart from "./SetsRepsBarChart";
+import Grid from '@mui/material/Grid';
+import {Typography} from "@mui/material";
 
 
 const AnalysisSection = ({data}) => {
@@ -83,10 +85,8 @@ const AnalysisSection = ({data}) => {
             for (let targetIndex in targets){
                 // add sets and reps
                 //console.log('[0]: ',newWeeklyTotalData[0].setsReps[0]);
-                newWeeklyTotalData[targetIndex].setsReps[0] += aggregatedData[dayIndex][targets[targetIndex]][0];
-                newWeeklyTotalData[targetIndex].setsReps[1] += aggregatedData[dayIndex][targets[targetIndex]][1];
-                //newWeeklyTotalData[targets[targetIndex]][0] += aggregatedData[dayIndex][targets[targetIndex]][0];
-                //newWeeklyTotalData[targets[targetIndex]][1] += aggregatedData[dayIndex][targets[targetIndex]][1];
+                newWeeklyTotalData[targetIndex].sets += aggregatedData[dayIndex][targets[targetIndex]][0];
+                //newWeeklyTotalData[targetIndex].setsReps[1] += aggregatedData[dayIndex][targets[targetIndex]][1];
             }
         }
         setWeeklyTotalData(newWeeklyTotalData);
@@ -99,19 +99,63 @@ const AnalysisSection = ({data}) => {
 
     },[aggregatedData]);
 
-    useEffect(()=> {
-        console.log(weeklyTotalData);
-    },[weeklyTotalData]);
+    // useEffect(()=> {
+    //     console.log(weeklyTotalData);
+    // },[weeklyTotalData]);
 
     return (
-        <div>
-            AnalysisSection
-            <Button variant="contained" onClick={collectData}>Refresh Analysis</Button>
-            <Container className="analysis-section-chart-container">
-                <SetsRepsBarChart data={weeklyTotalData}></SetsRepsBarChart>
-                <SetsRepsLineChart data={aggregatedData}></SetsRepsLineChart>
-            </Container>
-        </div>
+        <Grid container>
+
+            <Grid item xs={12} lg={4}>
+
+                <Container>
+                    <Typography variant="h5">
+                        Loading Data
+                    </Typography>
+                    <Typography component={'span'} variant="body1">
+
+                        <p>
+                            Click 'Refresh Analysis' to re-pull data from planner. <Button align="center" variant="contained" onClick={collectData}>Refresh Analysis</Button>
+                        </p>
+
+                    </Typography>
+                    <Typography variant="h5">
+                        Weekly Set Volume By Target Muscle
+                    </Typography>
+                    <Typography component={'span'} variant="body1">
+                        <p>
+                            Aggregation of weekly set volume for each listed muscle group (blue points) with general set ranges for optimal muscle hypertrophy (grey area).
+                        </p>
+                        <p>
+                            The optimal set range for muscle growth varies by many factors, such as lifting experience, technique, and lift selection.
+                        </p>
+                        <p>
+                            <a href="https://outlift.com/hypertrophy-training-volume/">HYPERTROPHY TRAINING VOLUME: HOW MANY SETS TO BUILD MUSCLE?</a>
+                        </p>
+                    </Typography>
+                    <Typography variant="h5">
+                        Sets Per Muscle By Day
+                    </Typography>
+                    <Typography component={'span'} variant="body1">
+                        <p>
+                            Representation of sets for each muscle group by day.
+                        </p>
+                        <p>
+                            Depending on your split type (ex. PPL, Upper/Lower, Body Part split), rest days between most muscles are generally recommended for optimal growth. The line chart visualizes your 'on' and 'off' days for each muscle - most routines will have alternating spikes of sets per muscle throughout the week.
+                        </p>
+                    </Typography>
+                </Container>
+
+            </Grid>
+            <Grid item xs={12} lg={8} container>
+                <Grid item xs={12}>
+                    <SetsRepsBarChart data={weeklyTotalData}></SetsRepsBarChart>
+                    <SetsRepsLineChart data={aggregatedData}></SetsRepsLineChart>
+                </Grid>
+            </Grid>
+
+
+        </Grid>
     )
 }
 

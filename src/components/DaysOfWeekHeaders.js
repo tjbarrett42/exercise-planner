@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 
 const DaysOfWeekHeaders = () => {
-    const days = ['','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+    const days = ['Exercises','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 
     return (
       <Grid container columns={8}>
