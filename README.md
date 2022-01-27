@@ -1,7 +1,7 @@
 # Workout Split Planner
 Optimize and visualize your weekly set volume by finding the perfect exercise for every muscle group with the equipment you have on hand.
 
-[exercise-planner.vercel.app](exercise-planner.vercel.app)
+[exercise-planner.vercel.app](https://exercise-planner.vercel.app)
 
 ![](src/misc/Demo3.png)
 
